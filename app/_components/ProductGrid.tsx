@@ -19,14 +19,18 @@ export function ProductGrid({
   onAddToCart,
   onViewDetails,
 }: ProductGridProps) {
-  const displayedProducts = products.slice(0, productsToShow)
-  const hasMore = products.length > productsToShow
+  // Deduplicate products by ID to avoid React key warnings
+  const uniqueProducts = products.filter(
+    (product, index, self) => self.findIndex((p) => p.id === product.id) === index
+  )
+  const displayedProducts = uniqueProducts.slice(0, productsToShow)
+  const hasMore = uniqueProducts.length > productsToShow
 
-  if (products.length === 0) return null
+  if (uniqueProducts.length === 0) return null
 
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-6">All Products ({products.length})</h2>
+      <h2 className="text-2xl font-bold mb-6">All Products ({uniqueProducts.length})</h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
         {displayedProducts.map((product) => (
           <ProductCard
@@ -41,7 +45,7 @@ export function ProductGrid({
       {hasMore && (
         <div className="text-center mt-8">
           <Button variant="outline" size="lg" onClick={onShowMore}>
-            Load More Products ({products.length - productsToShow} remaining)
+            Load More Products ({uniqueProducts.length - productsToShow} remaining)
           </Button>
         </div>
       )}

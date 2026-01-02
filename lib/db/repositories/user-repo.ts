@@ -4,9 +4,9 @@
  * CRUD operations for users
  */
 
-import { collections, generateId, toObjectId } from "./client"
-import type { User, Address } from "./schema"
-import { logger } from "../logger"
+import { collections, generateId, toObjectId } from "../client"
+import type { User, Address } from "../schema"
+import { logger } from "../../logger"
 import bcrypt from "bcryptjs"
 
 const log = logger.child({ module: "user-repo" })
